@@ -2,8 +2,7 @@ import json
 import glob
 import argparse
 
-import grafeas
-from totoify_grafeas.totoify_grafeas.totoifylib import GrafeasInTotoOccurrence
+from totoify_grafeas.totoifylib import GrafeasInTotoOccurrence
 from in_toto.models.metadata import Metablock
 from in_toto.models.link import Link
 
@@ -23,7 +22,8 @@ def link_to_occurence(path_to_link_meta, project_id, note_id):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert in-toto link to Grafeas Occurance")
     parser.add_argument("path", help="path to link file")
-    parser.add_argument("note_id", help="note id")
+    parser.add_argument("project_id", help="Grafeas project id")
+    parser.add_argument("note_id", help="Grafeas note id")
 
     try:
         args = parser.parse_args()

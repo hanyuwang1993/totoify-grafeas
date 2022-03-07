@@ -2,8 +2,7 @@ import json
 import glob
 import argparse
 
-import grafeas
-from totoify_grafeas.totoify_grafeas.totoifylib import GrafeasInTotoOccurrence
+from totoify_grafeas.totoifylib import GrafeasInTotoOccurrence
 from in_toto.models.metadata import Metablock
 from in_toto.models.link import Link
 
