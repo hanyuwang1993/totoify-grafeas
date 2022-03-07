@@ -93,7 +93,6 @@ class GrafeasInTotoOccurrence:
           "in_toto_link is not of type in_toto.models.metadata.Metablock")
 
     in_toto_link.validate()
-
     intoto = {}
     intoto["signatures"] = in_toto_link.signatures
 
@@ -145,21 +144,23 @@ class GrafeasInTotoOccurrence:
     command = []
     byproducts = {}
     environment = {}
+    
+    for item in self.intoto["signed"].get("materials",[]):
+      materials[item["resourceUri"]] = item["hashes"]
+    print(materials)
 
-    for item in self.intoto["signed"]["materials"]:
-      materials[item["resource_uri"]] = item["hashes"]
-
-    for item in self.intoto["signed"]["products"]:
-      products[item["resource_uri"]] = item["hashes"]
+    for item in self.intoto["signed"].get("products",[]):
+      products[item["resourceUri"]] = item["hashes"]
+    print(products)
 
     command = self.intoto["signed"]["command"]
 
     for key, value in self.intoto["signed"]["byproducts"].items():
-      if key != "custom_values":
+      if key != "customValues":
         byproducts[key] = value
-    if "custom_values" in self.intoto["signed"]["byproducts"]:
+    if "customValues" in self.intoto["signed"]["byproducts"]:
       for key, value in \
-          self.intoto["signed"]["byproducts"]["custom_values"].items():
+          self.intoto["signed"]["byproducts"]["customValues"].items():
         if key == "return-value":
           # This highlights a special case - in-toto's reference implementations
           # store return value as an integer while Grafeas allows only strings
@@ -168,13 +169,12 @@ class GrafeasInTotoOccurrence:
           byproducts[key] = value
 
     for key, value in self.intoto["signed"]["environment"].items():
-      if key != "custom_values":
+      if key != "customValues":
         environment[key] = value
-    if "custom_values" in self.intoto["signed"]["environment"]:
+    if "customValues" in self.intoto["signed"]["environment"]:
       for key, value in \
-          self.intoto["signed"]["environment"]["custom_values"].items():
+          self.intoto["signed"]["environment"]["customValues"].items():
         environment[key] = value
-
     return Metablock(
         signed=Link(
             name=step_name,
